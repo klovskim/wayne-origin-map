@@ -30,7 +30,7 @@
             type: 'circle',
             source: {
              type: 'vector',
-             url: 'mklovski.2g9xwqwj'
+             url: 'mapbox://mklovski.2g9xwqwj'
             },
             'source-layer': 'Origin_Population-bpaa8l', // name of tilesets
             'layout': {
@@ -39,6 +39,10 @@
             // style for the origin nodes, size according to people_count
             paint: {
             'circle-color': '#fffef7',
+            'circle-radius': [
+                '/',
+                ['number', ['get', 'people_cou']],
+            1000],
             'circle-opacity': 0.95,
             'circle-stroke-width': {
             stops: [[8, 1], [13, 4], [16, 5]]
@@ -54,7 +58,7 @@
             type: 'circle',
             source: {
              type: 'vector',
-             url: 'mklovski.aye65gnf'
+             url: 'mapbox://mklovski.aye65gnf'
             },
             'source-layer': 'wayne_county_centroid-9ufbqe', // name of tilesets
             'layout': {

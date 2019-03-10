@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <script src="path/to/leaflet@1.0.2/dist/leaflet.js"></script>
-    <script src="path/to/leaflet.antimeridian-src.js"></script>
     <meta charset='utf-8' />
     <title>Display a map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
@@ -27,32 +25,32 @@
 
     map.on('load', function() {
         // adding the points of origin here
-        // map.addLayer({
-        //     id: 'country_points',
-        //     type: 'circle',
-        //     source: {
-        //      type: 'vector',
-        //      url: 'mapbox://mklovski.2g9xwqwj'
-        //     },
-        //     'source-layer': 'Origin_Population-bpaa8l', // name of tilesets
-        //     'layout': {
-        //     'visibility': 'visible'
-        //     },
-        //     // style for the origin nodes, size according to people_count
-        //     paint: {
-        //     'circle-color': '#fffef7',
-        //     'circle-radius': [
-        //         '/',
-        //         ['number', ['get', 'people_cou']],
-        //     500],
-        //     'circle-opacity': 0.95,
-        //     'circle-stroke-width': {
-        //     stops: [[8, 1], [13, 4], [16, 5]]
-        //     },
-        //     'circle-stroke-color': '#fffef7',
-        //     'circle-stroke-opacity': 1
-        //     }
-        // }) 
+        map.addLayer({
+            id: 'country_points',
+            type: 'circle',
+            source: {
+             type: 'vector',
+             url: 'mapbox://mklovski.2g9xwqwj'
+            },
+            'source-layer': 'Origin_Population-bpaa8l', // name of tilesets
+            'layout': {
+            'visibility': 'visible'
+            },
+            // style for the origin nodes, size according to people_count
+            paint: {
+            'circle-color': '#99420c',
+            'circle-radius': [
+                '/',
+                ['number', ['get', 'people_cou']],
+            500],
+            'circle-opacity': 1,
+            'circle-stroke-width': {
+            stops: [[8, 1], [13, 4], [16, 5]]
+            },
+            'circle-stroke-color': '#99420c',
+            'circle-stroke-opacity': 1
+            }
+        }) 
 
         // adding wayne county centroid
         map.addLayer({
@@ -76,7 +74,7 @@
             'circle-stroke-color': '#c70f2e',
             'circle-stroke-opacity': 1
             }
-        })
+        }),
 
         map.addLayer({
             id: 'split_circle_lines',
@@ -87,18 +85,18 @@
             },
             'source-layer': 'asia_lines-abqtv5', // name of tilesets
             'layout': {
-            'visibility': 'none'
+            'visibility': 'visible'
             },
             // style for the origin nodes, size according to people_count
             paint: {
-            'line-color': '#ffffff',
+            'line-color': '#99420c',
             'line-opacity': 1,
             'line-width': [
                 '/',
                 ['number', ['get', 'people_cou']],
-            3000],
+            2000],
             }
-        })
+        }),
 
         map.addLayer({
             id: 'reg_circle_lines',
@@ -109,16 +107,16 @@
             },
             'source-layer': 'nosplit_lines-6tz5xp', // name of tilesets
             'layout': {
-            'visibility': 'none'
+            'visibility': 'visible'
             },
             // style for the origin nodes, size according to people_count
             paint: {
-            'line-color': '#ffffff',
+            'line-color': '#99420c',
             'line-opacity': 1,
             'line-width': [
                 '/',
                 ['number', ['get', 'people_cou']],
-            3000],
+            2000],
             }
         })
 

@@ -36,33 +36,6 @@
     });
     map.addControl(new mapboxgl.NavigationControl());
     map.on('load', function () {
-    // adding the points of origin here where the lines "originate"
-        map.addLayer({
-            id: 'country_points',
-            type: 'circle',
-            source: {
-             type: 'vector',
-             url: 'mapbox://mklovski.2p53ryec'
-            },
-            'source-layer': 'country_centroids-5solf9',
-            'layout': {},
-            // style for the origin nodes, size according to people_count
-            paint: {
-            'circle-color': [
-                'match',
-                ['get', 'continent'],
-                'Americas', '#99420c',
-                'Africa', '#7570b3',
-                'Asia', '#e55e5e',
-                'Europe', '#1b9e77',
-                'Oceania', '#3bb2d0',
-                /* other */ '#ccc'
-                ],
-            'circle-opacity': 1,
-            'circle-stroke-color': '#99420c',
-            'circle-stroke-opacity': 1
-            }
-        }),
         // adding wayne county outline
         map.addLayer({
         id: 'wayne_county',
@@ -143,8 +116,34 @@
                 ['number', ['get', 'people_cou']],
             2000],
             }
+        }),
+    // adding the points of origin here where the lines "originate"
+        map.addLayer({
+            id: 'country_points',
+            type: 'circle',
+            source: {
+             type: 'vector',
+             url: 'mapbox://mklovski.2p53ryec'
+            },
+            'source-layer': 'country_centroids-5solf9',
+            'layout': {},
+            // style for the origin nodes, size according to people_count
+            paint: {
+            'circle-color': [
+                'match',
+                ['get', 'continent'],
+                'Americas', '#99420c',
+                'Africa', '#7570b3',
+                'Asia', '#e55e5e',
+                'Europe', '#1b9e77',
+                'Oceania', '#3bb2d0',
+                /* other */ '#ccc'
+                ],
+            'circle-opacity': 1,
+            'circle-stroke-color': '#99420c',
+            'circle-stroke-opacity': 1
+            }
         })
-
     });
 // make a popup for when you click on the country points
     map.on('click', 'country_points', function (e) {

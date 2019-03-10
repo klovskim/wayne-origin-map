@@ -31,7 +31,7 @@
         center: [-37.705044, 25.502323],
         zoom: 2
     });
-    var hoveredPointID =  null;
+    map.addControl(new mapboxgl.NavigationControl());
     map.on('load', function () {
     // adding the points of origin here
         map.addLayer({

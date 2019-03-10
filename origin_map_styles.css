@@ -12,7 +12,35 @@
     padding: 10px;
     margin-left: 10px;
 }
+.box-legend {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8);
+    margin-right: 20px;
+    font-family: Arial, sans-serif;
+    overflow: auto;
+    border-radius: 3px;
+  }
 
+#legend {
+    padding: 10px;
+    bottom: 0;
+    right: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    line-height: 18px;
+    height: 100px;
+    margin-bottom: 40px;
+    width: 100px;
+  }
+
+.legend-key {
+    display: inline-block;
+    border-radius: 20%;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+}
 .map-overlay .map-overlay-inner {
     background-color: #fff;
     opacity: .5;
@@ -33,7 +61,7 @@
     opacity: 1;
     line-height: 18px;
     display: block;
-    margin: 0 0 10px;
+    margin: 0 0 0;
 }
 
 .map-overlay p.credit {
@@ -46,7 +74,7 @@
    min-width: 100px;
    font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
    padding: 0;
-   margin: 0,0,0,20px;
+   margin: 0,0,0,0;
 }
 
 </style>

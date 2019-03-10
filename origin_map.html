@@ -6,21 +6,28 @@
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
-        <style>
-        body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
-        </style>
+        <link href='origin_map_styles.css' rel='stylesheet' />
     </head>
 
     <body>
     <div id='map'></div>
+        <div class='map-overlay top'>
+            <div class='map-overlay-inner'>
+                <h2>Countries of Origin for Foreign-Born Residents in Wayne County, Michigan 2018</h2>
+                <p>Click on an origin point within a country to see how many people born in that country live in Wayne County</p>
+                <p class="credit">Population Data: <a href="https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml?refresh=t">U.S Census 2018</a></p>
+                <p class="credit"><a href="https://carto.com/blog/jets-and-datelines/">A helpful polyline wrapping resource</a></p>
+                <p class="credit"><a href="https://github.com/klovskim">My Github</a></p>
+                    
+            </div>
+        </div>
     <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoibWtsb3Zza2kiLCJhIjoiY2l6N2R0azl2MDA1NDJ3cG9uZ2RoMzF5aiJ9.UacgAXrCVFX4BmcbH4oj_w';
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mklovski/cjsswrzi53eeq1fpaqlb62fam',
         center: [-37.705044, 25.502323],
-        zoom: 2.4
+        zoom: 2
     });
     var hoveredPointID =  null;
     map.on('load', function () {
@@ -118,7 +125,7 @@
         }
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML("<h3>" + geography + "</h3>Wayne County Residents Born Here: " + people_count)
+            .setHTML("<h3>" + geography + "</h3>" + people_count + " People Born Here")
             .addTo(map);
         });
 

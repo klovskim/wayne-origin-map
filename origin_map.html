@@ -15,16 +15,16 @@
         <div class='map-overlay top'>
             <div class='map-overlay-inner'>
                 <!-- all the credits and data sources -->
-                <h2>Countries of Origin for Foreign-Born Residents in Wayne County, Michigan 2018</h2>
+                <h2>Countries of Origin for Foreign-Born Residents of Wayne County, Michigan 2018</h2>
                 <p>Click on an origin point within a country to see how many people born there now live in Wayne County</p>
                 <p class="credit">Population Data: <a href="https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml?refresh=t">U.S Census 2018</a></p>
                 <p class="credit">Country Centroids: <a href="https://worldmap.harvard.edu/data/geonode:country_centroids_az8">Harvard World Map</a></p>
                 <p class="credit">Wayne County: <a href="http://gis-michigan.opendata.arcgis.com/datasets/67a8ff23b5f54f15b7133b8c30981441_0">MI GIS Open Data</a></p>
                 <p class="credit"><a href="https://carto.com/blog/jets-and-datelines/">A helpful polyline wrapping resource</a></p>
-                <p class="credit"><a href="https://github.com/klovskim">My Github</a></p>
-                    
+                <p class="credit"><a href="https://github.com/klovskim">My Github</a></p>  
             </div>
         </div>
+        <div class='box-legend' id='legend'></div>
     <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoibWtsb3Zza2kiLCJhIjoiY2l6N2R0azl2MDA1NDJ3cG9uZ2RoMzF5aiJ9.UacgAXrCVFX4BmcbH4oj_w';
     const map = new mapboxgl.Map({
@@ -48,7 +48,16 @@
             'layout': {},
             // style for the origin nodes, size according to people_count
             paint: {
-            'circle-color': '#99420c',
+            'circle-color': [
+                'match',
+                ['get', 'continent'],
+                'Americas', '#99420c',
+                'Africa', '#7570b3',
+                'Asia', '#e55e5e',
+                'Europe', '#1b9e77',
+                'Oceania', '#3bb2d0',
+                /* other */ '#ccc'
+                ],
             'circle-opacity': 1,
             'circle-stroke-color': '#99420c',
             'circle-stroke-opacity': 1
@@ -87,7 +96,16 @@
             },
             // style for the origin nodes, size according to people_count and then scale by 2000
             paint: {
-            'line-color': '#99420c',
+            'line-color': [
+                'match',
+                ['get', 'continent'],
+                'Americas', '#99420c',
+                'Africa', '#7570b3',
+                'Asia', '#e55e5e',
+                'Europe', '#1b9e77',
+                'Oceania', '#3bb2d0',
+                /* other */ '#ccc'
+                ],
             'line-opacity': 1,
             'line-width': [
                 '/',
@@ -109,7 +127,16 @@
             },
             // style for the origin nodes, size according to people_count
             paint: {
-            'line-color': '#99420c',
+            'line-color': [
+                'match',
+                ['get', 'continent'],
+                'Americas', '#99420c',
+                'Africa', '#7570b3',
+                'Asia', '#e55e5e',
+                'Europe', '#1b9e77',
+                'Oceania', '#3bb2d0',
+                /* other */ '#ccc'
+                ],
             'line-opacity': 1,
             'line-width': [
                 '/',
@@ -141,6 +168,24 @@
     map.on('mouseleave', 'country_points', function () {
         map.getCanvas().style.cursor = '';
     });  
+
+    // add a legend
+    var legendlabels = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+    var colors = ['#7570b3', '#99420c', '#e55e5e', '#1b9e77', '#3bb2d0'];
+    for (i = 0; i < legendlabels.length; i++) {
+        var layer = legendlabels[i];
+        var color = colors[i];
+        var item = document.createElement('div');
+        var key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        var value = document.createElement('span');
+        value.innerHTML = layer;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend.appendChild(item);
+    }
         </script>
     </body>
 </html>

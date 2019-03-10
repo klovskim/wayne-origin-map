@@ -16,6 +16,8 @@
                 <h2>Countries of Origin for Foreign-Born Residents in Wayne County, Michigan 2018</h2>
                 <p>Click on an origin point within a country to see how many people born in that country live in Wayne County</p>
                 <p class="credit">Population Data: <a href="https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml?refresh=t">U.S Census 2018</a></p>
+                <p class="credit">Country Centroids: <a href="https://worldmap.harvard.edu/data/geonode:country_centroids_az8">Harvard World Map</a></p>
+                <p class="credit">Wayne County: <a href="http://gis-michigan.opendata.arcgis.com/datasets/67a8ff23b5f54f15b7133b8c30981441_0">MI GIS Open Data</a></p>
                 <p class="credit"><a href="https://carto.com/blog/jets-and-datelines/">A helpful polyline wrapping resource</a></p>
                 <p class="credit"><a href="https://github.com/klovskim">My Github</a></p>
                     
@@ -49,26 +51,24 @@
             'circle-stroke-opacity': 1
             }
         }),
-
-        // adding wayne county centroid
+        // adding wayne county outline
         map.addLayer({
-            id: 'wayne_county',
-            type: 'circle',
-            source: {
-             type: 'vector',
-             url: 'mapbox://mklovski.aye65gnf'
-            },
-            'source-layer': 'wayne_county_centroid-9ufbqe', // name of tilesets
-            'layout': {
-            'visibility': 'visible'
-            },
-            // style for the origin nodes, size according to people_count
-            paint: {
-            'circle-color': '#c70f2e',
-            'circle-opacity': 0.95,
-            'circle-stroke-color': '#c70f2e',
-            'circle-stroke-opacity': 1
-            }
+        id: 'wayne_county',
+        type: 'fill',
+        source: {
+         type: 'vector',
+         url: 'mapbox://mklovski.5jbu3hm3'
+        },
+        'source-layer': 'wayne_county_border-23lapf', // name of tilesets
+        'layout': {
+        'visibility': 'visible'
+        },
+        // style for the origin nodes, size according to people_count
+        paint: {
+        'fill-color': '#ffffff',
+        'fill-opacity': .5,
+        'fill-outline-color': '#000000',
+        }
         }),
 
         map.addLayer({
@@ -114,7 +114,8 @@
             2000],
             }
         })
-    }),
+
+    });
 
     map.on('click', 'country_points', function (e) {
         var coordinates = e.features[0].geometry.coordinates.slice();

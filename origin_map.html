@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta charset='utf-8' />
-    <title>Display a map</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+        <meta charset='utf-8' />
+        <title>Display a map</title>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
         <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -14,43 +14,50 @@
 
     <body>
     <div id='map'></div>
-        <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWtsb3Zza2kiLCJhIjoiY2l6N2R0azl2MDA1NDJ3cG9uZ2RoMzF5aiJ9.UacgAXrCVFX4BmcbH4oj_w';
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mklovski/cjsswrzi53eeq1fpaqlb62fam',
-            center: [-37.705044, 25.502323],
-            zoom: 2.4
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWtsb3Zza2kiLCJhIjoiY2l6N2R0azl2MDA1NDJ3cG9uZ2RoMzF5aiJ9.UacgAXrCVFX4BmcbH4oj_w';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mklovski/cjsswrzi53eeq1fpaqlb62fam',
+        center: [-37.705044, 25.502323],
+        zoom: 2.4
+    });
+    var hoveredPointID =  null;
+    map.on('load', function () {
+        map.addSource('points', {
+            'type': 'vector',
+            'url': 'mapbox://mklovski.2p53ryec'
         });
-
-    map.on('load', function() {
-        // adding the points of origin here
+        map.addLayer({
+            id: "point-fills",
+            type: "circle",
+            source: 'points',
+            'source-layer': 'country_centroids-5solf9',
+            layout: {},
+            paint: {
+            'circle-color': '#99420c',
+            'circle-opacity': ['case',
+                ["boolean", ['feature-state', 'hover'], false],
+                1,
+                0
+                ]
+            }
+        });
+    // adding the points of origin here
         map.addLayer({
             id: 'country_points',
             type: 'circle',
-            source: {
-             type: 'vector',
-             url: 'mapbox://mklovski.2g9xwqwj'
-            },
-            'source-layer': 'Origin_Population-bpaa8l', // name of tilesets
-            'layout': {
-            'visibility': 'visible'
-            },
+            source: 'points',
+            'source-layer': 'country_centroids-5solf9',
+            'layout': {},
             // style for the origin nodes, size according to people_count
             paint: {
-            'circle-color': '#99420c',
-            'circle-radius': [
-                '/',
-                ['number', ['get', 'people_cou']],
-            500],
+            'circle-color': '#ffffff',
             'circle-opacity': 1,
-            'circle-stroke-width': {
-            stops: [[8, 1], [13, 4], [16, 5]]
-            },
-            'circle-stroke-color': '#99420c',
+            'circle-stroke-color': '#ffffff',
             'circle-stroke-opacity': 1
             }
-        }) 
+        }),
 
         // adding wayne county centroid
         map.addLayer({
@@ -68,9 +75,6 @@
             paint: {
             'circle-color': '#c70f2e',
             'circle-opacity': 0.95,
-            'circle-stroke-width': {
-            stops: [[8, 1], [13, 4], [16, 5]]
-            },
             'circle-stroke-color': '#c70f2e',
             'circle-stroke-opacity': 1
             }
@@ -97,7 +101,7 @@
             2000],
             }
         }),
-
+// regular lines
         map.addLayer({
             id: 'reg_circle_lines',
             type: 'line',
@@ -119,8 +123,43 @@
             2000],
             }
         })
+    }),
 
+    map.on('click', 'country_points', function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var geography = e.features[0].properties.geography;
+        var people_count = e.features[0].properties.people_count;
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML("<h3>" + geography + "</h3>Wayne County Residents Born Here: " + people_count)
+            .addTo(map);
+        });
+
+    map.on('mouseenter', 'country_points', function () {
+        map.getCanvas().style.cursor = 'pointer';
     });
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'country_points', function () {
+        map.getCanvas().style.cursor = '';
+    });  
+    map.on("mousemove", "point-fills", function(e) {
+        if (e.features.length > 0) {
+            if (hoveredPointID) {
+                map.setFeatureState({'source-layer': 'country_centroids-5solf9', id: hoveredPointID}, { hover: false});
+            }
+            hoveredBorderID = e.features[0].id;
+            map.setFeatureState({'source-layer': 'country_centroids-5solf9', id: hoveredPointID}, { hover: true});
+        }
+        });
+    map.on("mouseleave", "point-fills", function() {
+        if (hoveredPointID) {
+            map.setFeatureState({'source-layer': 'country_centroids-5solf9', id: hoveredPointID}, { hover: false});
+        }
+        hoveredPointID =  null;
+        });
         </script>
     </body>
 </html>

@@ -5,7 +5,7 @@
 
 -- first create the table of lines
 CREATE TABLE line_table AS
--- SELECT * FROM first_table
+SELECT * FROM first_table
 -- if you want a second table's points
 -- SELECT * FROM second_table
 -- you could also just select the geom from the first table, set that as source/destination_geom, and then do the same for the others
